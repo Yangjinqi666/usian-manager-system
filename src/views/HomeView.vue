@@ -16,7 +16,7 @@ export default {
   },
   created() {
     axios({
-      url: process.env.VUE_APP_BASE_API + "/",
+      url: process.env.VUE_APP_BASE_API1 + "/",
       method: "GET"
     })
       .then(response => {
