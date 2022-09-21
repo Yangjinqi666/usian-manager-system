@@ -8,19 +8,30 @@
 <script>
 // @ is an alias to /src
 import HelloWorld from "@/components/HelloWorld.vue";
-import axios from "axios";
+import TestApi from "../api/test";
 export default {
   name: "HomeView",
   components: {
     HelloWorld
   },
+  data() {
+    return {
+      page:1,
+      size:1
+    }
+  },
   created() {
-    axios({
-      url: process.env.VUE_APP_BASE_API1 + "/",
-      method: "GET"
-    })
+    TestApi.getMemberList(this.page,this.size)
       .then(response => {
-        console.log(response);
+        console.log("member=>", response);
+      })
+      .catch(error => {
+        console.log(error);
+      });
+
+    TestApi.getSupplierList(this.page,this.size)
+      .then(response => {
+        console.log("supplier=>", response);
       })
       .catch(error => {
         console.log(error);

@@ -9,6 +9,8 @@ Vue.use(ElementUI);
 
 Vue.config.productionTip = false
 
+
+
 console.log("--",process.env.VUE_APP_BASE_API);
 
 new Vue({
