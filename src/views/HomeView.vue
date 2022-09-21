@@ -16,33 +16,68 @@ export default {
   },
   data() {
     return {
-      page:1,
-      size:1,
-      id:100
-    }
+      page: 1,
+      size: 1,
+      id: 100,
+      test:{
+        name:"jack"
+      }
+    };
   },
   created() {
-    TestApi.getMemberList(this.page,this.size)
-      .then(response => {
-        console.log("member=>", response);
-      })
-      .catch(error => {
-        console.log(error);
-      });
+    this.getMemberList();
+    this.getSupplierList();
+    this.findMember();
+    this.getBanner();
+    this.getList();
+  },
+  methods: {
+    getBanner() {
+      TestApi.getBanner()
+        .then(response => {
+          console.log("banner=>", response);
+        })
+        .catch(error => {
+          console.log(error);
+        });
+    },
+    getList() {
+      TestApi.getList()
+        .then(response => {
+          console.log("list=>", response);
+        })
+        .catch(error => {
+          console.log(error);
+        });
+    },
 
-    TestApi.getSupplierList(this.page,this.size)
-      .then(response => {
-        console.log("supplier=>", response);
-      })
-      .catch(error => {
-        console.log(error);
-      });
-
-      TestApi.findMember(this.id).then(response=>{
-        console.log("find=>",response);
-      }).catch(error=>{
-        console.log(error);
-      })
+    getMemberList() {
+      TestApi.getMemberList(this.page, this.size)
+        .then(response => {
+          console.log("member=>", response);
+        })
+        .catch(error => {
+          console.log(error);
+        });
+    },
+    getSupplierList() {
+      TestApi.getSupplierList(this.page, this.size)
+        .then(response => {
+          console.log("supplier=>", response);
+        })
+        .catch(error => {
+          console.log(error);
+        });
+    },
+    findMember() {
+      TestApi.findMember(this.id)
+        .then(response => {
+          console.log("find=>", response);
+        })
+        .catch(error => {
+          console.log(error);
+        });
+    }
   }
 };
 </script>

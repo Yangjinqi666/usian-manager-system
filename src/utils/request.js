@@ -1,7 +1,7 @@
 import axios from 'axios'
 
 const service=axios.create({
-  baseURL: process.env.VUE_APP_BASE_API,
+  // baseURL: process.env.VUE_APP_BASE_API,
   timeout:5000
 })
 
@@ -30,6 +30,9 @@ const request=(options)=>{
     options.params=options.data || options.params
     delete options.data
   }
+
+  service.defaults.baseURL=options.proxy||process.env.VUE_APP_BASE_API
+
   console.log(options);
   return service(options)
 }

@@ -4,6 +4,22 @@ import request from '../utils/request'
 // 供应商管理接口  http://vue.mengxuegu.com/pro-api/supplier/list/search/1/10
 // 查询单个会员接口  http://vue.mengxuegu.com/pro-api/member/10
 
+const getBanner=()=>{
+  return request({
+    url:'/',
+    proxy: process.env["VUE_APP_BASE_V1"],
+  })
+}
+
+const getList=()=>{
+  return request({
+    url:'/',
+    proxy: process.env["VUE_APP_BASE_V2"]
+  })
+}
+
+
+
 const getMemberList = (page = 1, size = 10, data = {}) => {
   return request({
     url: `/member/list/search/${page}/${size}`,
@@ -34,5 +50,7 @@ const findMember = (id) => {
 export default {
   getMemberList,
   getSupplierList,
-  findMember
+  findMember,
+  getBanner,
+  getList
 }
