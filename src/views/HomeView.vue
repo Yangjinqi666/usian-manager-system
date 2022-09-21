@@ -17,7 +17,8 @@ export default {
   data() {
     return {
       page:1,
-      size:1
+      size:1,
+      id:100
     }
   },
   created() {
@@ -36,6 +37,12 @@ export default {
       .catch(error => {
         console.log(error);
       });
+
+      TestApi.findMember(this.id).then(response=>{
+        console.log("find=>",response);
+      }).catch(error=>{
+        console.log(error);
+      })
   }
 };
 </script>

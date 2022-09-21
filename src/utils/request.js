@@ -24,4 +24,14 @@ service.interceptors.response.use(function (response) {
   return Promise.reject(error);
 });
 
-export default service
+const request=(options)=>{
+  options.method=options.method||'get'
+  if(options.method.toLowerCase()==='get'){
+    options.params=options.data || options.params
+    delete options.data
+  }
+  console.log(options);
+  return service(options)
+}
+
+export default request
