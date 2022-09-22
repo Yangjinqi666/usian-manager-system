@@ -20,26 +20,41 @@ const routes = [
         path: 'index',
         name: 'index',
         component: ()=>import("../views/index"),
+        meta:{
+          title:"首页"
+        }
       },
       {
         path: 'goods',
         name: 'goods',
         component: ()=>import("../views/goods"),
+        meta:{
+          title:"商品管理"
+        }
       },
       {
         path: 'member',
         name: 'member',
         component: ()=>import("../views/member"),
+        meta:{
+          title:"会员管理"
+        }
       },
       {
         path: 'staff',
         name: 'staff',
         component: ()=>import("../views/staff"),
+        meta:{
+          title:"员工管理"
+        }
       },
       {
         path: 'supplier',
         name: 'supplier',
         component: ()=>import("../views/supplier"),
+        meta:{
+          title:"供应商管理"
+        }
       }
     ]
   }
