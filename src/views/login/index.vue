@@ -18,69 +18,82 @@
   </div>
 </template>
 <script>
-  import {login} from '../../api/user'
-  export default {
-    data() {
-      return {
-        loginForm: {
-          username: "",
-          password: ""
-        },
-        rules: {
-          username: [
-            { required: true, message: '账号不能为空', trigger: 'blur' },
-            { min: 3, max: 12, message: '长度在 3 到 12 个字符', trigger: 'blur' }
-          ],
-          password: [
-            { required: true, message: '密码不能为空', trigger: 'blur' },
-            { min: 6, max: 12, message: '长度在 6 到 12 个字符', trigger: 'blur' }
-          ],
-        }
-      }
-    },
-    methods: {
-      handleLoginSubmit() {
-        this.$refs['form'].validate(valid=>{
-          if(!valid) return
-          this.handleLogin()
-        })
+export default {
+  data() {
+    return {
+      loginForm: {
+        username: '',
+        password: ''
       },
-      async handleLogin(){
-        try{
-          const response=await login(this.loginForm)
-          console.log('response=>',  response);
-          console.log("token=>",response.token);
-        }catch(e){
-          console.log(e.message);
-        }
+      rules: {
+        username: [
+          { required: true, message: '账号不能为空', trigger: 'blur' },
+          { min: 3, max: 12, message: '长度在 3 到 12 个字符', trigger: 'blur' }
+        ],
+        password: [
+          { required: true, message: '密码不能为空', trigger: 'blur' },
+          // { min: 6, max: 12, message: '长度在 6 到 12 个字符', trigger: 'blur' }
+        ]
       }
     }
-  };
+  },
+  methods: {
+    handleLoginSubmit() {
+      this.$refs['form'].validate(valid=>{
+        if(!valid) return
+        // 校验通过之后执行登录方法
+        this.handleLogin()
+      })
+    },
+    // 登录方法
+    async handleLogin(){
+      const token = await this.$store.dispatch("login",this.loginForm)
+      if(!token) return
+      const userInfo = await this.$store.dispatch("handleUserInfo")
+      if(!userInfo) return
+      this.$message.success("登录成功")
+      this.$router.push("/")
+    }
+    // try {
+    //   const response = await login(this.loginForm)
+    //   // console.log('response=>',response);
+    //   // console.log('token=>',response.token);
+    //   this.$store.dispatch('DIS_SET_TOKEN', response.token)
+    //   const userInfo = await getUserInfo()
+    //   // console.log("userInfo=>",userInfo);
+    //   this.$store.dispatch('DIS_SET_USER_INFO', userInfo)
+    //   this.$message.success('登陆成功')
+    //   this.$router.push('/')
+    // } catch (e) {
+    //   console.log(e.message)
+    // }
+  }
+}
 </script>
 <style lang="scss" scoped>
-  .login-wrapper {
-    height: 100%;
-    background: url("http://vue.mengxuegu.com/img/login.b665435f.jpg") no-repeat;
-    width: 100%;
-    overflow: hidden;
-  }
+.login-wrapper {
+  height: 100%;
+  background: url('http://vue.mengxuegu.com/img/login.b665435f.jpg') no-repeat;
+  width: 100%;
+  overflow: hidden;
+}
 
-  .login-form {
-    width: 350px;
-    background-color: rgba(255, 255, 255, 0.8);
-    margin: 160px auto;
-    border-radius: 20px;
-    padding: 28px;
-  }
+.login-form {
+  width: 350px;
+  background-color: rgba(255, 255, 255, 0.8);
+  margin: 160px auto;
+  border-radius: 20px;
+  padding: 28px;
+}
 
-  .login-title {
-    font-size: 24px;
-    font-weight: 700;
-    text-align: center;
-    margin-top: 20px;
-  }
+.login-title {
+  font-size: 24px;
+  font-weight: 700;
+  text-align: center;
+  margin-top: 20px;
+}
 
-  .el-form {
-    margin-top: 20px;
-  }
+.el-form {
+  margin-top: 20px;
+}
 </style>
