@@ -13,7 +13,34 @@ const routes = [
   {
     path: '/',
     name: 'layout',
-    component: ()=>import("../layout")
+    component: ()=>import("../layout"),
+    children:[
+      {
+        path: 'index',
+        name: 'index',
+        component: ()=>import("../views/index"),
+      },
+      {
+        path: 'goods',
+        name: 'goods',
+        component: ()=>import("../views/goods"),
+      },
+      {
+        path: 'member',
+        name: 'member',
+        component: ()=>import("../views/member"),
+      },
+      {
+        path: 'staff',
+        name: 'staff',
+        component: ()=>import("../views/staff"),
+      },
+      {
+        path: 'supplier',
+        name: 'supplier',
+        component: ()=>import("../views/supplier"),
+      }
+    ]
   }
 ]
 
