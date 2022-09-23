@@ -1,3 +1,4 @@
+import { userInfo } from "@/api/user"
 
 const TOKEN_KEY="token"
 const USER_INFO_KEY="userInfo"
@@ -16,6 +17,9 @@ export const setUserInfo=(userInfo)=>{
 }
 
 export const getUserInfo=()=>{
+  if(localStorage.getItem(USER_INFO_KEY)==="undefined"){
+    return "{}"
+  }
   return JSON.parse(localStorage.getItem(USER_INFO_KEY)||"{}")
 }
 
