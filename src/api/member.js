@@ -8,7 +8,30 @@ const getMemberList=(page,size,data)=>{
   })
 }
 
+const deleteMemberList=(id)=>{
+  return request({
+    url:`/member/${id}`,
+    method:'DELETE'
+  })
+}
+
+const addMember=()=>{
+
+}
+
+const editMember=()=>{
+
+}
+
+const findMember=()=>{
+
+}
+
 
 export default{
-  getMemberList
+  getMemberList,
+  deleteMemberList,
+  addMember,
+  editMember,
+  findMember
 }

@@ -44,7 +44,7 @@
     <el-table-column label="操作" width="150">
     <template v-slot="scope">
         <el-button @click="handleClick(scope.row)" size="mini">编辑</el-button>
-        <el-button type="danger" size="mini">删除</el-button>
+        <el-button type="danger" size="mini" @click="handleDelete(scope.row.id)">删除</el-button>
       </template>
     </el-table-column>
   </el-table>
@@ -101,8 +101,34 @@ export default {
       this.page=1,
       this.getMemberList()
     },
+    /*表单重置*/
     handleReset(formName){
        this.$refs[formName].resetFields();
+    },
+    /*删除会员功能*/
+    handleDelete(id){
+       this.$confirm('此操作将永久删除该文件, 是否继续?', '提示', {
+          confirmButtonText: '确定',
+          cancelButtonText: '取消',
+          type: 'warning'
+        }).then(async () => {
+          try{
+            const response=await MemberApi.deleteMemberList(id)
+            this.$message({
+            type: 'success',
+            message: '删除成功!'
+            });
+            this.getMemberList()
+          }catch(e){
+            console.log(e.message);
+          }
+
+        }).catch(() => {
+          this.$message({
+            type: 'info',
+            message: '已取消删除'
+          });          
+        });
     }
   },
   filters:{
