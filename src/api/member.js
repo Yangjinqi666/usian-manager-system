@@ -15,8 +15,12 @@ const deleteMemberList=(id)=>{
   })
 }
 
-const addMember=()=>{
-
+const addMember=(data)=>{
+  return request({
+    url:`/member`,
+    method:'POST',
+  })
+  data
 }
 
 const editMember=()=>{

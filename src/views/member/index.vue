@@ -22,11 +22,10 @@
   </el-form-item>
   <el-form-item>
     <el-button type="primary" @click="handleQueryMember">查询</el-button>
-    <el-button type="primary">新增</el-button>
+    <el-button type="primary" @click="handleOpenDialog">新增</el-button>
     <el-button @click="handleReset('memberQueryForm')">重置</el-button>
   </el-form-item>
 </el-form>
-
   <el-table :data="memberList" height="380" border style="width: 100%">
     <el-table-column prop="date" type="index" label="序号" width="60"></el-table-column>
     <el-table-column prop="cardNum" label="会员卡号"></el-table-column>
@@ -43,12 +42,11 @@
     <el-table-column prop="address" label="会员地址"></el-table-column>
     <el-table-column label="操作" width="150">
     <template v-slot="scope">
-        <el-button @click="handleClick(scope.row)" size="mini">编辑</el-button>
+        <el-button size="mini" @click="handleOpenDialog('edit')">编辑</el-button>
         <el-button type="danger" size="mini" @click="handleDelete(scope.row.id)">删除</el-button>
       </template>
     </el-table-column>
   </el-table>
-
   <el-pagination
       @size-change="handleSizeChange"
       @current-change="handleCurrentChange"
@@ -58,6 +56,42 @@
       layout="total, sizes, prev, pager, next, jumper"
       :total="total">
     </el-pagination>
+  <el-dialog :title="dialogTitle"  :visible.sync="dialogFormVisible" width="500px">
+  <el-form ref="dialogForm" :model="dialogFormParams" :rules="dialogRules" style="width:400px" label-width="120px">
+    <el-form-item label="会员卡号" prop="cardNum">
+      <el-input v-model="dialogFormParams.cardNum" autocomplete="off"></el-input>
+    </el-form-item>
+    <el-form-item label="会员姓名" prop="name">
+      <el-input v-model="dialogFormParams.name" autocomplete="off"></el-input>
+    </el-form-item>
+    <el-form-item label="会员生日">
+       <el-date-picker value-format="yyyy-MM-dd" v-model="dialogFormParams.birthday" type="date" placeholder="选择日期">
+    </el-date-picker>
+    </el-form-item>
+    <el-form-item label="手机号码">
+      <el-input v-model="dialogFormParams.phone" autocomplete="off"></el-input>
+    </el-form-item>
+    <el-form-item label="开卡金额">
+      <el-input v-model="dialogFormParams.money" autocomplete="off"></el-input>
+    </el-form-item>
+    <el-form-item label="可用积分">
+      <el-input v-model="dialogFormParams.integer" autocomplete="off"></el-input>
+    </el-form-item>
+    <el-form-item label="支付类型" prop="payType">
+      <el-select v-model="dialogFormParams.payType" placeholder="支付类型">
+        <el-option v-for="(item,index) in payType" :key="index" :label="item.name" :value="item.type"></el-option>
+      </el-select>
+    </el-form-item>
+    <el-form-item label="会员地址">
+      <el-input type="textarea" v-model="dialogFormParams.address"></el-input>
+    </el-form-item>
+  </el-form>
+  <div slot="footer" class="dialog-footer">
+    <el-button @click="dialogFormVisible = false">取 消</el-button>
+    <el-button type="primary" @click="handleSubmit">确 定</el-button>
+  </div>
+</el-dialog>
+
   </div>
 </template>
 <script>
@@ -76,7 +110,30 @@ export default {
         payType:"",
         birthday:""
       },
-      payType: MemberEnum.payType
+      payType: MemberEnum.payType,
+      dialogFormVisible:false,
+      dialogFormParams:{
+        cardNum:'',
+        name:'',
+        birthday:'',
+        phone:'',
+        money:'',
+        integer:'',
+        payType:'',
+        address:'',
+      },
+      dialogTitle:'会员新增',
+      dialogRules:{
+          cardNum: [
+            { required: true, message: '会员卡号不能为空', trigger: 'blur' },
+          ],
+          name: [
+            { required: true, message: '会员姓名不能为空', trigger: 'blur' },
+          ],
+          payType: [
+            { required: true, message: '请选择支付类型', trigger: 'change' }
+          ],
+      }
     }
   },
   created() {
@@ -129,6 +186,27 @@ export default {
             message: '已取消删除'
           });          
         });
+    },
+    handleOpenDialog(value){
+      this.dialogTitle=value==='edit'?'会员编辑':'会员新增'
+      this.dialogFormVisible=true
+    },
+    handleSubmit(){
+      this.$refs['dialogForm'].validate(valid=>{
+        if(!valid) return
+        console.log(this.dialogFormParams);
+      })
+      this.handleAddMember()
+    },
+    async handleAddMember(){
+      try{
+        const response=await MemberApi.addMember(this.dialogFormParams)
+        this.dialogFormVisible=false
+        this.$message.success("新增成功")
+        this.getMemberList()
+      }catch(e){
+        console.log(e.message);
+      }
     }
   },
   filters:{
