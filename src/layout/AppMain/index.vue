@@ -1,7 +1,6 @@
 <template>
   <div>
-    <app-link v-if="controllLink">
-      
+    <app-link v-if="controllLink">  
     </app-link>
     <router-view></router-view>
   </div>

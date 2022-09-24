@@ -1,18 +1,18 @@
 <template>
   <div class="mt-2">
-<el-form :inline="true" :model="memberQueryParems" class="demo-form-inline">
-  <el-form-item>
+<el-form :inline="true" ref="memberQueryForm" :model="memberQueryParems" class="demo-form-inline">
+  <el-form-item prop="cardNum">
     <el-input v-model="memberQueryParems.cardNum" placeholder="会员卡号"></el-input>
   </el-form-item>
-    <el-form-item>
+    <el-form-item prop="name">
     <el-input v-model="memberQueryParems.name" placeholder="会员名称"></el-input>
   </el-form-item>
-  <el-form-item>
+  <el-form-item prop="payType">
     <el-select v-model="memberQueryParems.payType" placeholder="支付类型">
       <el-option v-for="(item,index) in payType" :key="index" :label="item.name" :value="item.type"></el-option>
     </el-select>
   </el-form-item>
-  <el-form-item>
+  <el-form-item prop="birthday">
    <el-date-picker
    value-format="yyyy-MM-dd"
       v-model="memberQueryParems.birthday"
@@ -23,7 +23,7 @@
   <el-form-item>
     <el-button type="primary" @click="handleQueryMember">查询</el-button>
     <el-button type="primary">新增</el-button>
-    <el-button>重置</el-button>
+    <el-button @click="handleReset('memberQueryForm')">重置</el-button>
   </el-form-item>
 </el-form>
 
@@ -100,6 +100,9 @@ export default {
       console.log(this.memberQueryParems);
       this.page=1,
       this.getMemberList()
+    },
+    handleReset(formName){
+       this.$refs[formName].resetFields();
     }
   },
   filters:{
